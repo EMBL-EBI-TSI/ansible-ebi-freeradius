@@ -1,0 +1,21 @@
+---
+- name: Install build dependencies
+  yum: name={{item}} state=present
+  with_items:
+    - git
+    - curl-devel
+
+- name: Clone linotp2 code
+  git: repo=https://github.com/LinOTP/LinOTP.git dest={{freeradius_build_path}}/LinOTP version='{{freeradius_linotp_branch}}'
+
+- name: Copy module contents
+  command: cp -r {{freeradius_build_path}}/LinOTP/auth_modules/src/freeradius/src/rlm_linotp2 {{freeradius_build_fullpath}}/src/modules/ creates={{freeradius_build_fullpath}}/src/modules/rlm_linotp2
+
+- name: Link module config files
+  file: path={{freeradius_build_fullpath}}/{{item.dest}} src={{freeradius_build_path}}/LinOTP/auth_modules/src/freeradius/src/rlm_linotp2/{{item.src}} state=link
+  with_items:
+    - {src: linotp2.conf, dest: raddb/modules/linotp}
+    - {src: linotp, dest: raddb/sites-available/linotp}
+
+- name: Add module to list of modules
+  lineinfile: dest={{freeradius_build_fullpath}}/src/modules/stable line='rlm_linotp2' state=present

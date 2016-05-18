@@ -1,0 +1,22 @@
+---
+- name: Install build dependencies
+  yum: name={{item}} state=present
+  with_items:
+    - gcc
+    - openssl-devel
+
+- name: Download and extract software
+  unarchive: src={{freeradius_fullurl}} dest={{freeradius_build_path}} copy=no creates={{freeradius_build_fullpath}}
+
+- include: rlm_linotp2.yml
+  when: freeradius_linotp
+
+- name: Configure build
+  command: ./configure --prefix={{freeradius_install_prefix}} {{freeradius_build_opts}} chdir={{freeradius_build_fullpath}} creates=Make.inc
+
+- name: Make build
+  command: make chdir={{freeradius_build_fullpath}} creates=libltdl/libltdl.la
+
+- name: Install build
+  command: make install chdir={{freeradius_build_fullpath}} creates={{freeradius_install_prefix}}/lib/libltdl.la
+

@@ -1,0 +1,8 @@
+---
+freeradius_version: 2.2.9
+freeradius_url: 'ftp://ftp.freeradius.org/pub/freeradius'
+freeradius_build_path: /usr/local/src
+freeradius_install_prefix: /usr/local
+freeradius_build_opts: ''
+freeradius_linotp: no
+freeradius_linotp_branch: master

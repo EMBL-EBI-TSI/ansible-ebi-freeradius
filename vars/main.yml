@@ -1,0 +1,3 @@
+---
+freeradius_fullurl: '{{freeradius_url}}/freeradius-server-{{freeradius_version}}.tar.gz'
+freeradius_build_fullpath: '{{freeradius_build_path}}/freeradius-server-{{freeradius_version}}'
