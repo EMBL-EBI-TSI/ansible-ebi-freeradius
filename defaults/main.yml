@@ -6,3 +6,5 @@ freeradius_install_prefix: /usr/local
 freeradius_build_opts: ''
 freeradius_linotp: no
 freeradius_linotp_branch: master
+freeradius_linotp_secret: secret
+freeradius_linotp_clients: [localhost]

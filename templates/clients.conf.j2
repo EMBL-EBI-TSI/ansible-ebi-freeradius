@@ -1,0 +1,5 @@
+{% for client in freeradius_linotp_clients %}
+client {{client}} {
+  secret = {{freeradius_linotp_secret}}
+}
+{% endfor %}
