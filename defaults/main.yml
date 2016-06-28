@@ -8,3 +8,5 @@ freeradius_linotp: no
 freeradius_linotp_branch: master
 freeradius_linotp_secret: secret
 freeradius_linotp_clients: [localhost]
+freeradius_linotp_realm:
+freeradius_linotp_resolver:

@@ -20,5 +20,8 @@
 - name: Install build
   command: make install chdir={{freeradius_build_fullpath}} creates={{freeradius_install_prefix}}/lib/libltdl.la
 
-- name: Drop linotp secret
-  template: dest={{freeradius_install_prefix}}/etc/raddb/clients.conf src=clients.conf.j2 owner=root mode=0640
+- name: Configure clients
+  template: dest={{freeradius_install_prefix}}/etc/raddb/clients.conf src=clients.conf.j2 owner=root group=root mode=0640
+
+- name: Configure linotp connection
+  template: dest={{freeradius_install_prefix}}/etc/raddb/linotp2.conf src=linotp2.conf.j2 owner=root group=root mode=0640
