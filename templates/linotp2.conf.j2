@@ -1,0 +1,15 @@
+linotp2 {
+  validateurl = https://localhost/validate/simplecheck
+  sslhostnameverify = yes
+  sslcertverify = no
+  {% if freeradius_linotp_realm | default() -%}
+  realm = {{freeradius_linotp_realm}}
+  {% endif -%}
+  {% if freeradius_linotp_resolver | default() -%}
+  resConf = {{freeradius_linotp_resolver}}
+  {% endif -%}
+  restrictusername = yes
+  loguser = yes
+  logpassword = no
+  allowemptypassword = no
+}
