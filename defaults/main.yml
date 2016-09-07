@@ -10,3 +10,4 @@ freeradius_linotp_secret: secret
 freeradius_linotp_clients: [localhost]
 freeradius_linotp_realm:
 freeradius_linotp_resolver:
+freeradius_allow_vulnerable_openssl: yes

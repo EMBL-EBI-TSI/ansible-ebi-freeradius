@@ -20,8 +20,28 @@
 - name: Install build
   command: make install chdir={{freeradius_build_fullpath}} creates={{freeradius_install_prefix}}/lib/libltdl.la
 
+- name: Configure radiusd
+  template: dest={{freeradius_install_prefix}}/etc/raddb/radiusd.conf src=radiusd.conf.j2 owner=root group=root mode=0640
+
 - name: Configure clients
   template: dest={{freeradius_install_prefix}}/etc/raddb/clients.conf src=clients.conf.j2 owner=root group=root mode=0640
 
-- name: Configure linotp connection
-  template: dest={{freeradius_install_prefix}}/etc/raddb/linotp2.conf src=linotp2.conf.j2 owner=root group=root mode=0640
+- name: Configure linotp module
+  template: dest={{freeradius_install_prefix}}/etc/raddb/modules/linotp2.conf src=linotp2.conf.j2 owner=root group=root mode=0640
+
+- name: Configure linotp site
+  template: dest={{freeradius_install_prefix}}/etc/raddb/sites-available/linotp src=linotp.j2 owner=root group=root mode=0640
+
+- name: Enable linotp site
+  file: dest={{freeradius_install_prefix}}/etc/raddb/sites-enabled/linotp src={{freeradius_install_prefix}}/etc/raddb/sites-available/linotp owner=root group=root mode=0640 state=link
+
+- name: List enabled sites
+  find: paths={{freeradius_install_prefix}}/etc/raddb/sites-enabled pattern='(?!linotp)' use_regex=yes
+  register: last
+
+- name: Disable other sites
+  file: dest={{freeradius_install_prefix}}/etc/raddb/sites-enabled/{{item.path | basename}} state=absent
+  with_items: '{{last.files}}'
+
+- name: Configure users authentication
+  template: dest={{freeradius_install_prefix}}/etc/raddb/users src=users.j2 owner=root group=root mode=0640
