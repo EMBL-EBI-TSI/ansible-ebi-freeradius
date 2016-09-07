@@ -3,3 +3,9 @@ client {{client}} {
   secret = {{freeradius_linotp_secret}}
 }
 {% endfor %}
+
+# Uncomment to test on localhost
+# client localhost {
+#   secret = testing123
+#   ipaddr = 127.0.0.1
+# }
