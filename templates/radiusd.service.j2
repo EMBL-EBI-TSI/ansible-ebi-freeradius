@@ -1,0 +1,13 @@
+[Unit]
+Description=FreeRADIUS Server
+After=syslog.target network.target
+
+[Service]
+# ExecStartPre={{freeradius_install_prefix}}/etc/raddb/certs/bootstrap
+ExecStartPre={{freeradius_install_prefix}}/sbin/radiusd -C
+ExecStart={{freeradius_install_prefix}}/sbin/radiusd -f -d {{freeradius_install_prefix}}/etc/raddb
+ExecReload={{freeradius_install_prefix}}/sbin/radiusd -C
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

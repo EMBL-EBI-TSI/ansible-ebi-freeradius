@@ -45,3 +45,9 @@
 
 - name: Configure users authentication
   template: dest={{freeradius_install_prefix}}/etc/raddb/users src=users.j2 owner=root group=root mode=0640
+
+- name: Drop systemd service
+  template: dest=/etc/systemd/system/radiusd.service src=radiusd.service.j2 owner=root group=root mode=0644
+
+- name: Start server
+  service: name=radiusd state=started enabled=yes
