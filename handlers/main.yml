@@ -1,0 +1,3 @@
+---
+- name: Restart radiusd
+  service: name=radiusd state=restarted

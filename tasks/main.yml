@@ -22,18 +22,23 @@
 
 - name: Configure radiusd
   template: dest={{freeradius_install_prefix}}/etc/raddb/radiusd.conf src=radiusd.conf.j2 owner=root group=root mode=0640
+  notify: Restart radiusd
 
 - name: Configure clients
   template: dest={{freeradius_install_prefix}}/etc/raddb/clients.conf src=clients.conf.j2 owner=root group=root mode=0640
+  notify: Restart radiusd
 
 - name: Configure linotp module
   template: dest={{freeradius_install_prefix}}/etc/raddb/modules/linotp2.conf src=linotp2.conf.j2 owner=root group=root mode=0640
+  notify: Restart radiusd
 
 - name: Configure linotp site
   template: dest={{freeradius_install_prefix}}/etc/raddb/sites-available/linotp src=linotp.j2 owner=root group=root mode=0640
+  notify: Restart radiusd
 
 - name: Enable linotp site
   file: dest={{freeradius_install_prefix}}/etc/raddb/sites-enabled/linotp src={{freeradius_install_prefix}}/etc/raddb/sites-available/linotp owner=root group=root mode=0640 state=link
+  notify: Restart radiusd
 
 - name: List enabled sites
   find: paths={{freeradius_install_prefix}}/etc/raddb/sites-enabled pattern='(?!linotp)' use_regex=yes
@@ -42,9 +47,11 @@
 - name: Disable other sites
   file: dest={{freeradius_install_prefix}}/etc/raddb/sites-enabled/{{item.path | basename}} state=absent
   with_items: '{{last.files}}'
+  notify: Restart radiusd
 
 - name: Configure users authentication
   template: dest={{freeradius_install_prefix}}/etc/raddb/users src=users.j2 owner=root group=root mode=0640
+  notify: Restart radiusd
 
 - name: Drop systemd service
   template: dest=/etc/systemd/system/radiusd.service src=radiusd.service.j2 owner=root group=root mode=0644
