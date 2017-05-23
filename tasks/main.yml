@@ -42,11 +42,11 @@
 
 - name: List enabled sites
   find: paths={{freeradius_install_prefix}}/etc/raddb/sites-enabled pattern='(?!linotp)' use_regex=yes
-  register: last
+  register: freeradius__r_sites
 
 - name: Disable other sites
   file: dest={{freeradius_install_prefix}}/etc/raddb/sites-enabled/{{item.path | basename}} state=absent
-  with_items: '{{last.files}}'
+  with_items: '{{freeradius__r_sites.files}}'
   notify: Restart radiusd
 
 - name: Configure users authentication
